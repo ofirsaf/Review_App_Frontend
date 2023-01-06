@@ -6,6 +6,7 @@ import { Switch } from "react-router-dom";
 import HomePage from "./pages/Home";
 import EmailVerfication from "./pages/EmailVerfication";
 import ForgetPaassword from "./pages/ForgetPassword";
+import ConfirmPassword from "./components/auth/ConfirmPassword";
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
         </Route>
         <Route path="/auth/forgetPassword">
           <ForgetPaassword />
+        </Route>
+        <Route path="/auth/confirm-password">
+          <ConfirmPassword />
         </Route>
       </Switch>
     </>

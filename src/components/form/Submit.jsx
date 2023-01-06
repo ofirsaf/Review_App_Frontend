@@ -3,8 +3,8 @@ const Submit = ({ value }) => {
     <input
       type="submit"
       value={value}
-      className="w-full rouned bg-white hover:bg-opacity-90
-      transition font-semibold text-lg text-secondary cursor-pointer p-1"
+      className="w-full rouned dark:bg-white bg-secondary hover:bg-opacity-90
+      transition font-semibold text-lg dark:text-secondary text-white cursor-pointer p-1"
     />
   );
 };

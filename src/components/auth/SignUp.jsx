@@ -3,6 +3,7 @@ import FormInput from "../form/FromInput";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
 import { NavLink } from "react-router-dom";
+
 const SignUp = () => {
   return (
     <div
@@ -23,13 +24,13 @@ const SignUp = () => {
           <Submit value="Sign Up" />
           <div className="flex justify-between">
             <NavLink
-              className="text-dark-subtle hover:text-white transition"
+              className="dark:text-dark-subtle text-light-subtle dark:hover:text-white hover:text-primary transition"
               to="/auth/forgetPassword"
             >
               Forgot Password?
             </NavLink>
             <NavLink
-              className="text-dark-subtle hover:text-white transition"
+              className="dark:text-dark-subtle text-light-subtle dark:hover:text-white hover:text-primary transition"
               to="/auth/signin"
             >
               Sign In

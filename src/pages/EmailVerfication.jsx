@@ -1,10 +1,7 @@
 import Container from "../components/Container";
-import FormInput from "../components/form/FromInput";
 import Submit from "../components/form/Submit";
-import { NavLink } from "react-router-dom";
 import Title from "../components/form/Title";
 import { useEffect, useRef, useState } from "react";
-import { Input } from "postcss";
 const OTP_LENGTH = 6;
 const EmailVerfication = () => {
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
@@ -16,7 +13,27 @@ const EmailVerfication = () => {
     const newOtp = [...otp];
     newOtp[index] = value.substring(value.length - 1, value.length);
     console.log(newOtp);
+
+    if (!value) {
+      focusPrevInputField(index);
+    } else {
+      focusNextInputField(index);
+    }
     setOtp([...newOtp]);
+  };
+  const handleKeyDown = (e, index) => {
+    console.log(e.target.value);
+    if (e.key === "Backspace") {
+      focusPrevInputField(index);
+    }
+  };
+  const focusPrevInputField = (index) => {
+    let nextIndex;
+    const diff = index - 1;
+    nextIndex = diff !== 0 ? diff : 0;
+    setActiveOtpIndex(nextIndex);
+  };
+  const focusNextInputField = (index) => {
     setActiveOtpIndex(index + 1);
   };
   useEffect(() => {
@@ -48,6 +65,7 @@ const EmailVerfication = () => {
                   value={otp[index]}
                   key={index}
                   onChange={(e) => handleOtpChange(e, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
                   ref={activeOtpIndex === index ? input : null}
                 />
               );
