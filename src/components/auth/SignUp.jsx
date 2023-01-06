@@ -21,18 +21,20 @@ const SignUp = () => {
             name="Confirm Password"
           />
           <Submit value="Sign Up" />
-          <NavLink
-            className="text-dark-subtle hover:text-white transition"
-            to="/auth/forgetPassword"
-          >
-            Forgot Password?
-          </NavLink>
-          <NavLink
-            className="text-dark-subtle hover:text-white transition"
-            to="/auth/signin"
-          >
-            Sign In
-          </NavLink>
+          <div className="flex justify-between">
+            <NavLink
+              className="text-dark-subtle hover:text-white transition"
+              to="/auth/forgetPassword"
+            >
+              Forgot Password?
+            </NavLink>
+            <NavLink
+              className="text-dark-subtle hover:text-white transition"
+              to="/auth/signin"
+            >
+              Sign In
+            </NavLink>
+          </div>
         </form>
       </Container>
     </div>
