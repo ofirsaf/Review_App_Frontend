@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { useTheme } from "../../hooks";
 const Navbar = () => {
   const { toggleTheme } = useTheme();
-  
+
   return (
     <div className="bg-secondary shadow-sm shadow-gray-500">
       <Container className="p-2">
@@ -17,7 +17,7 @@ const Navbar = () => {
             <li>
               <button
                 onClick={toggleTheme}
-                className="bg-dark-subtle p-1 rounded"
+                className="dark:bg-white bg-dark-subtle p-1 rounded"
               >
                 <BsFillSunFill className="text-secondary" size={24} />
               </button>

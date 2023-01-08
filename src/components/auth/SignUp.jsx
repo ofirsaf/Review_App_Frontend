@@ -3,23 +3,91 @@ import FormInput from "../form/FromInput";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
 import { NavLink } from "react-router-dom";
+import { commonModelsClassed } from "../../utils/theme";
+import FormContainer from "../form/FormContainer";
+import { useState } from "react";
+import createUser from "../../api/auth";
 
 const SignUp = () => {
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const { name, email, password } = userInfo;
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setUserInfo({ ...userInfo, [name]: value });
+  };
+  const validateUserInfo = ({ name, email, password }) => {
+    const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const isVlilidName = /^[a-z A-Z]+$/;
+    if (!name.trim()) return { ok: false, error: "Name is required" };
+    if (!isVlilidName.test(name))
+      return { ok: false, error: "Name is invalid" };
+    if (!email.trim()) return { ok: false, error: "Email is required" };
+    if (!isValidEmail.test(email))
+      return { ok: false, error: "Email is invalid" };
+    if (!password.trim()) return { ok: false, error: "Password is required" };
+    if (password.length < 8)
+      return { ok: false, error: "Password is too short, 8 charchterr" };
+    if (password !== confirmPassword)
+      return { ok: false, error: "Passwords do not match" };
+    return { ok: true };
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    validateUserInfo(userInfo);
+    const res = validateUserInfo(userInfo);
+    if (res.ok) {
+      const { error, user } = await createUser(userInfo);
+      if (error) {
+        return console.log(error);
+      }
+      console.log(user);
+    } else {
+      console.log(res.error);
+    }
+  };
   return (
-    <div
-      className="fixed inset-0 bg-primary -z-10 flex justify-center
-     items-center"
-    >
+    <FormContainer>
       <Container>
-        <form className="bg-secondary rounded p-6 w-72 space-y-3">
+        <form onSubmit={handleSubmit} className={commonModelsClassed + "w-72"}>
           <Title>Sign Up</Title>
-          <FormInput label="Email" placeholder="XXX@gmail.com" name="Email" />
-          <FormInput label="Name" placeholder="Ofir Safin" name="name" />
-          <FormInput label="Password" placeholder="*******" name="Password" />
+          <FormInput
+            label="Name"
+            value={name}
+            placeholder="Ofir Safin"
+            name="name"
+            onChange={handleChange}
+            required
+          />
+          <FormInput
+            label="Email"
+            value={email}
+            placeholder="XXX@gmail.com"
+            name="email"
+            onChange={handleChange}
+            required
+          />
+          <FormInput
+            label="Password"
+            value={password}
+            placeholder="*******"
+            type="password"
+            name="password"
+            onChange={handleChange}
+            required
+          />
           <FormInput
             label="Confirm Password"
             placeholder="*******"
             name="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
           />
           <Submit value="Sign Up" />
           <div className="flex justify-between">
@@ -38,7 +106,7 @@ const SignUp = () => {
           </div>
         </form>
       </Container>
-    </div>
+    </FormContainer>
   );
 };
 export default SignUp;

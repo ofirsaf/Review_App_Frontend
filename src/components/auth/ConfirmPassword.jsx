@@ -1,16 +1,15 @@
 import React from "react";
+import { commonModelsClassed } from "../../utils/theme";
 import Container from "../Container";
+import FormContainer from "../form/FormContainer";
 import FormInput from "../form/FromInput";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
 const ConfirmPassword = () => {
   return (
-    <div
-      className="fixed inset-0 bg-primary -z-10 flex justify-center
-items-center"
-    >
+    <FormContainer>
       <Container>
-        <form className="bg-secondary rounded p-6 w-96 space-y-6">
+        <form className={commonModelsClassed + " w-96"}>
           <Title>Please Enter New Password</Title>
           <FormInput
             label="New Password"
@@ -26,7 +25,7 @@ items-center"
           <Submit value="Confirm Password" />
         </form>
       </Container>
-    </div>
+    </FormContainer>
   );
 };
 export default ConfirmPassword;

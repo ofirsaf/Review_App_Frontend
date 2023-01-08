@@ -2,6 +2,8 @@ import Container from "../components/Container";
 import Submit from "../components/form/Submit";
 import Title from "../components/form/Title";
 import { useEffect, useRef, useState } from "react";
+import FormContainer from "../components/form/FormContainer";
+import { commonModelsClassed } from "../utils/theme";
 const OTP_LENGTH = 6;
 const EmailVerfication = () => {
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
@@ -41,15 +43,12 @@ const EmailVerfication = () => {
   }, [activeOtpIndex]);
 
   return (
-    <div
-      className="fixed inset-0 bg-primary -z-10 flex justify-center
-     items-center"
-    >
+    <FormContainer>
       <Container>
-        <form className="bg-secondary rounded p-6 space-y-6">
+        <form className={commonModelsClassed}>
           <div>
             <Title>Please Enter the OTP to verify your account</Title>
-            <p className="text-center text-dark-subtle">
+            <p className="text-center dark:text-dark-subtle text-light-subtle">
               OTP has been sent to your email
             </p>
           </div>
@@ -57,9 +56,9 @@ const EmailVerfication = () => {
             {otp.map((_, index) => {
               return (
                 <input
-                  className="w-12 h-12 border-2 border-dark-subtle
-               focus:border-white rounded bg-transparent outline-none
-               text-center text-white text-xl font-semibold 
+                  className="w-12 h-12 border-2 dark:border-dark-subtle border-light-subtle
+               dark:focus:border-white focus:border-primary rounded bg-transparent outline-none
+               text-center dark:text-white text-primary text-xl font-semibold 
                spin-button-none"
                   type="number"
                   value={otp[index]}
@@ -74,7 +73,7 @@ const EmailVerfication = () => {
           <Submit value="Verify account" />
         </form>
       </Container>
-    </div>
+    </FormContainer>
   );
 };
 export default EmailVerfication;
