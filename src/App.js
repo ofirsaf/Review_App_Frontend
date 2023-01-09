@@ -7,6 +7,7 @@ import HomePage from "./pages/Home";
 import EmailVerfication from "./pages/EmailVerfication";
 import ForgetPaassword from "./pages/ForgetPassword";
 import ConfirmPassword from "./components/auth/ConfirmPassword";
+import Notfound from "./components/Notfound";
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
         </Route>
         <Route path="/auth/confirm-password">
           <ConfirmPassword />
+        </Route>
+        <Route path="*">
+          <Notfound />
         </Route>
       </Switch>
     </>

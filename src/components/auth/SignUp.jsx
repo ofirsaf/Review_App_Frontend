@@ -6,7 +6,8 @@ import { NavLink } from "react-router-dom";
 import { commonModelsClassed } from "../../utils/theme";
 import FormContainer from "../form/FormContainer";
 import { useState } from "react";
-import createUser from "../../api/auth";
+import { createUser } from "../../api/auth";
+import { useHistory } from "react-router-dom";
 
 const SignUp = () => {
   const [userInfo, setUserInfo] = useState({
@@ -14,6 +15,9 @@ const SignUp = () => {
     email: "",
     password: "",
   });
+
+  const history = useHistory();
+
   const [confirmPassword, setConfirmPassword] = useState("");
   const { name, email, password } = userInfo;
   const handleChange = ({ target }) => {
@@ -45,7 +49,10 @@ const SignUp = () => {
       if (error) {
         return console.log(error);
       }
-      console.log(user);
+      history.push("/auth/verification", {
+        state: { user: user },
+        replace: true,
+      });
     } else {
       console.log(res.error);
     }
