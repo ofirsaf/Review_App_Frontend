@@ -5,15 +5,61 @@ import Title from "../form/Title";
 import { NavLink } from "react-router-dom";
 import { commonModelsClassed } from "../../utils/theme";
 import FormContainer from "../form/FormContainer";
+import { useState } from "react";
+import { useAuth, useNotfication } from "../../hooks";
 
 const SignIn = () => {
+  const { updateNotifcation } = useNotfication();
+  const { handleLogin, authInfo } = useAuth();
+  console.log(authInfo);
+
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    password: "",
+  });
+  const { email, password } = userInfo;
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setUserInfo({ ...userInfo, [name]: value });
+  };
+  const validateUserInfo = ({ name, email, password }) => {
+    const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!email.trim()) return { ok: false, error: "Email is required" };
+    if (!isValidEmail.test(email))
+      return { ok: false, error: "Email is invalid" };
+    if (!password.trim()) return { ok: false, error: "Password is required" };
+    if (password.length < 8)
+      return { ok: false, error: "Password is too short, 8 charchterr" };
+    return { ok: true };
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { ok, error } = validateUserInfo(userInfo);
+    if (!ok) {
+      return updateNotifcation("error", error);
+    }
+    handleLogin(userInfo.email, userInfo.password);
+  };
   return (
     <FormContainer>
       <Container>
-        <form className={commonModelsClassed + " w-72"}>
+        <form onSubmit={handleSubmit} className={commonModelsClassed + " w-72"}>
           <Title>Sign In</Title>
-          <FormInput label="Email" placeholder="XXX@gmail.com" name="Email" />
-          <FormInput label="Password" placeholder="*******" name="Password" />
+          <FormInput
+            label="Email"
+            value={email}
+            placeholder="XXX@gmail.com"
+            name="email"
+            onChange={handleChange}
+          />
+          <FormInput
+            label="Password"
+            value={password}
+            placeholder="*******"
+            name="password"
+            onChange={handleChange}
+            type="password"
+          />
           <Submit value="Sign In" />
           <div className="flex justify-between">
             <NavLink

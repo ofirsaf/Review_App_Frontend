@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <Navbar />
-      
+
       <Switch>
         <Route path="/" exact>
           <HomePage />
