@@ -8,7 +8,7 @@ import FormContainer from "../form/FormContainer";
 import { useState } from "react";
 import { createUser } from "../../api/auth";
 import { useHistory } from "react-router-dom";
-
+import { useNotfication } from "../../hooks";
 const SignUp = () => {
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -17,7 +17,7 @@ const SignUp = () => {
   });
 
   const history = useHistory();
-
+  const { updateNotifcation } = useNotfication();
   const [confirmPassword, setConfirmPassword] = useState("");
   const { name, email, password } = userInfo;
   const handleChange = ({ target }) => {
@@ -47,14 +47,14 @@ const SignUp = () => {
     if (res.ok) {
       const { error, user } = await createUser(userInfo);
       if (error) {
-        return console.log(error);
+        return updateNotifcation("error", error);
       }
       history.push("/auth/verification", {
         state: { user: user },
         replace: true,
       });
     } else {
-      console.log(res.error);
+      updateNotifcation("error", res.error);
     }
   };
   return (

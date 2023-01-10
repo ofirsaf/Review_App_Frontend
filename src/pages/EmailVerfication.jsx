@@ -7,13 +7,14 @@ import { useEffect, useRef, useState } from "react";
 import FormContainer from "../components/form/FormContainer";
 import { commonModelsClassed } from "../utils/theme";
 import { verifyUserEmail } from "../api/auth";
+import { useNotfication } from "../hooks";
 const OTP_LENGTH = 6;
 const EmailVerfication = () => {
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
 
   const input = useRef();
-
+  const { updateNotifcation } = useNotfication();
   const history = useHistory();
 
   const { state } = useLocation();
@@ -46,14 +47,13 @@ const EmailVerfication = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user);
-    if (!isValidOtp(otp)) return console.log("otp is invalid");
+    if (!isValidOtp(otp)) return updateNotifcation("error", "otp is invalid");
     const { error, message } = await verifyUserEmail({
       OTP: otp.join(""),
       userId: user.id,
     });
-    if (error) return console.log(error);
-    console.log(message);
+    if (error) return updateNotifcation("error", error);
+    updateNotifcation("success", message);
   };
   const isValidOtp = (otp) => {
     let valid = false;
