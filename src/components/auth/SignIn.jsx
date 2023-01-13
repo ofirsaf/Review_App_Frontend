@@ -5,13 +5,20 @@ import Title from "../form/Title";
 import { NavLink } from "react-router-dom";
 import { commonModelsClassed } from "../../utils/theme";
 import FormContainer from "../form/FormContainer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth, useNotfication } from "../../hooks";
-
+import { useHistory } from "react-router-dom";
 const SignIn = () => {
   const { updateNotifcation } = useNotfication();
+  const history = useHistory();
   const { handleLogin, authInfo } = useAuth();
-  console.log(authInfo);
+  const { isPending, isLoggedIn } = authInfo;
+  useEffect(() => {
+    console.log(isLoggedIn);
+    if (isLoggedIn) {
+      history.push("/");
+    }
+  }, [isLoggedIn]);
 
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -60,7 +67,7 @@ const SignIn = () => {
             onChange={handleChange}
             type="password"
           />
-          <Submit value="Sign In" />
+          <Submit value="Sign In" busy={isPending} />
           <div className="flex justify-between">
             <NavLink
               to="/auth/forgetPassword"

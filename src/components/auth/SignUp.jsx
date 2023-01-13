@@ -9,12 +9,23 @@ import { useState } from "react";
 import { createUser } from "../../api/auth";
 import { useHistory } from "react-router-dom";
 import { useNotfication } from "../../hooks";
+import { useAuth } from "../../hooks";
+import { useEffect } from "react";
+
 const SignUp = () => {
   const [userInfo, setUserInfo] = useState({
     name: "",
     email: "",
     password: "",
   });
+  const { authInfo } = useAuth();
+  const { isLoggedIn } = authInfo;
+  useEffect(() => {
+    console.log(isLoggedIn);
+    if (isLoggedIn) {
+      history.push("/");
+    }
+  }, [isLoggedIn]);
 
   const history = useHistory();
   const { updateNotifcation } = useNotfication();
