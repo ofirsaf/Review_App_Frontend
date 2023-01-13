@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import { useNotfication } from "../../hooks";
 import { useAuth } from "../../hooks";
 import { useEffect } from "react";
+import { isValidEmail } from "../../utils/helper";
 
 const SignUp = () => {
   const [userInfo, setUserInfo] = useState({
@@ -36,7 +37,6 @@ const SignUp = () => {
     setUserInfo({ ...userInfo, [name]: value });
   };
   const validateUserInfo = ({ name, email, password }) => {
-    const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const isVlilidName = /^[a-z A-Z]+$/;
     if (!name.trim()) return { ok: false, error: "Name is required" };
     if (!isVlilidName.test(name))

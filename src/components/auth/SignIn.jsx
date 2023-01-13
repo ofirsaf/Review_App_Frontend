@@ -8,13 +8,13 @@ import FormContainer from "../form/FormContainer";
 import { useEffect, useState } from "react";
 import { useAuth, useNotfication } from "../../hooks";
 import { useHistory } from "react-router-dom";
+import { isValidEmail } from "../../utils/helper";
 const SignIn = () => {
   const { updateNotifcation } = useNotfication();
   const history = useHistory();
   const { handleLogin, authInfo } = useAuth();
   const { isPending, isLoggedIn } = authInfo;
   useEffect(() => {
-    console.log(isLoggedIn);
     if (isLoggedIn) {
       history.push("/");
     }
@@ -30,7 +30,6 @@ const SignIn = () => {
     setUserInfo({ ...userInfo, [name]: value });
   };
   const validateUserInfo = ({ name, email, password }) => {
-    const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!email.trim()) return { ok: false, error: "Email is required" };
     if (!isValidEmail.test(email))
       return { ok: false, error: "Email is invalid" };

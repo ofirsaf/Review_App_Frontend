@@ -8,11 +8,13 @@ import FormContainer from "../components/form/FormContainer";
 import { commonModelsClassed } from "../utils/theme";
 import { verifyUserEmail } from "../api/auth";
 import { useNotfication } from "../hooks";
+import { useAuth } from "../hooks";
 const OTP_LENGTH = 6;
 const EmailVerfication = () => {
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
-
+  const { isAuth, authInfo } = useAuth();
+  const { isLoggedIn } = authInfo;
   const input = useRef();
   const { updateNotifcation } = useNotfication();
   const history = useHistory();
@@ -48,12 +50,18 @@ const EmailVerfication = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValidOtp(otp)) return updateNotifcation("error", "otp is invalid");
-    const { error, message } = await verifyUserEmail({
+    const {
+      error,
+      message,
+      user: userResponse,
+    } = await verifyUserEmail({
       OTP: otp.join(""),
       userId: user.id,
     });
     if (error) return updateNotifcation("error", error);
     updateNotifcation("success", message);
+    localStorage.setItem("auth-token", userResponse.token);
+    isAuth();
   };
   const isValidOtp = (otp) => {
     let valid = false;
@@ -68,10 +76,9 @@ const EmailVerfication = () => {
     input.current?.focus();
   }, [activeOtpIndex]);
   useEffect(() => {
-    if (!user) {
-      history.push("/not-found");
-    }
-  }, []);
+    if (!user) history.push("/not-found");
+    if (isLoggedIn) history.push("/");
+  }, [user, isLoggedIn]);
   return (
     <FormContainer>
       <Container>

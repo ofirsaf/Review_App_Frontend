@@ -1,11 +1,15 @@
 import React from "react";
 import { commonModelsClassed } from "../../utils/theme";
 import Container from "../Container";
+import { useParams } from "react-router-dom";
 import FormContainer from "../form/FormContainer";
 import FormInput from "../form/FromInput";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
 const ConfirmPassword = () => {
+  const { id } = useParams();
+  const { token } = useParams();
+  
   return (
     <FormContainer>
       <Container>
