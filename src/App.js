@@ -33,6 +33,9 @@ function App() {
         <Route path="/auth/reset-password/:token/:id">
           <ConfirmPassword />
         </Route>
+        <Route path="/auth/reset-password">
+          <ConfirmPassword />
+        </Route>
         <Route path="*">
           <Notfound />
         </Route>

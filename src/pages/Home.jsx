@@ -1,9 +1,9 @@
+import Container from "../components/Container";
+import { useAuth } from "../hooks";
+import { useHistory } from "react-router-dom";
+import NotVerfied from "../components/user/NotVerfied";
 const HomePage = () => {
-  return (
-    <div>
-      <h1>Home Pageeeeeee</h1>
-    </div>
-  );
+  return <NotVerfied />;
 };
 
 export default HomePage;

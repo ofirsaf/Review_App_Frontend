@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import FormContainer from "../components/form/FormContainer";
 import { commonModelsClassed } from "../utils/theme";
-import { verifyUserEmail } from "../api/auth";
+import { resendEmailVerficationToken, verifyUserEmail } from "../api/auth";
 import { useNotfication } from "../hooks";
 import { useAuth } from "../hooks";
 const OTP_LENGTH = 6;
@@ -14,13 +14,17 @@ const EmailVerfication = () => {
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
   const { isAuth, authInfo } = useAuth();
-  const { isLoggedIn } = authInfo;
+  const { isLoggedIn, profile } = authInfo;
+  const isVerified = profile?.isVerified;
   const input = useRef();
   const { updateNotifcation } = useNotfication();
+
   const history = useHistory();
 
   const { state } = useLocation();
+
   const user = state?.state.user;
+
   const handleOtpChange = (e, index) => {
     const value = e.target.value;
     const newOtp = [...otp];
@@ -33,20 +37,30 @@ const EmailVerfication = () => {
     }
     setOtp([...newOtp]);
   };
+
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace") {
       focusPrevInputField(index);
     }
   };
+
   const focusPrevInputField = (index) => {
     let nextIndex;
     const diff = index - 1;
     nextIndex = diff !== 0 ? diff : 0;
     setActiveOtpIndex(nextIndex);
   };
+
   const focusNextInputField = (index) => {
     setActiveOtpIndex(index + 1);
   };
+
+  const handleOtpReset = async () => {
+    const { error, message } = await resendEmailVerficationToken(user.id);
+    if (error) return updateNotifcation("error", error);
+    updateNotifcation("success", message);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValidOtp(otp)) return updateNotifcation("error", "otp is invalid");
@@ -63,6 +77,7 @@ const EmailVerfication = () => {
     localStorage.setItem("auth-token", userResponse.token);
     isAuth();
   };
+
   const isValidOtp = (otp) => {
     let valid = false;
 
@@ -72,13 +87,16 @@ const EmailVerfication = () => {
     }
     return valid;
   };
+
   useEffect(() => {
     input.current?.focus();
   }, [activeOtpIndex]);
+
   useEffect(() => {
     if (!user) history.push("/not-found");
-    if (isLoggedIn) history.push("/");
-  }, [user, isLoggedIn]);
+    if (isLoggedIn && isVerified) history.push("/");
+  }, [user, isLoggedIn, isVerified]);
+
   return (
     <FormContainer>
       <Container>
@@ -107,7 +125,16 @@ const EmailVerfication = () => {
               );
             })}
           </div>
-          <Submit value="Verify account" />
+          <div>
+            <Submit value="Verify account" />
+            <button
+              type="button"
+              className="dark:text-white text-blue-500 font-semibold hover:underline mt-2"
+              onClick={handleOtpReset}
+            >
+              I don't have otp
+            </button>
+          </div>
         </form>
       </Container>
     </FormContainer>

@@ -73,6 +73,36 @@ export const verifyPasswordResetToken = async (token, userId) => {
     });
     return data;
   } catch (error) {
+    console.log(error);
+    const response = error.response;
+    if (response?.data) {
+      return response.data;
+    }
+    return { error: error.message || error };
+  }
+};
+
+export const resetPassword = async (passwordInfo) => {
+  try {
+    const { data } = await client.post("/user/reset-password", passwordInfo);
+    return data;
+  } catch (error) {
+    const response = error.response;
+    if (response?.data) {
+      return response.data;
+    }
+    return { error: error.message || error };
+  }
+};
+
+export const resendEmailVerficationToken = async (userId) => {
+  try {
+    const { data } = await client.post(
+      "/user/resend-email-verification-token",
+      { userId }
+    );
+    return data;
+  } catch (error) {
     const response = error.response;
     if (response?.data) {
       return response.data;

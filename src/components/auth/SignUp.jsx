@@ -22,7 +22,6 @@ const SignUp = () => {
   const { authInfo } = useAuth();
   const { isLoggedIn } = authInfo;
   useEffect(() => {
-    console.log(isLoggedIn);
     if (isLoggedIn) {
       history.push("/");
     }
@@ -42,8 +41,7 @@ const SignUp = () => {
     if (!isVlilidName.test(name))
       return { ok: false, error: "Name is invalid" };
     if (!email.trim()) return { ok: false, error: "Email is required" };
-    if (!isValidEmail.test(email))
-      return { ok: false, error: "Email is invalid" };
+    if (!isValidEmail) return { ok: false, error: "Email is invalid" };
     if (!password.trim()) return { ok: false, error: "Password is required" };
     if (password.length < 8)
       return { ok: false, error: "Password is too short, 8 charchterr" };
