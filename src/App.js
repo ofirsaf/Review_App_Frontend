@@ -8,8 +8,16 @@ import EmailVerfication from "./pages/EmailVerfication";
 import ForgetPaassword from "./pages/ForgetPassword";
 import ConfirmPassword from "./components/auth/ConfirmPassword";
 import Notfound from "./components/Notfound";
+import { useAuth } from "./hooks";
+import AdminNavigator from "./navigator/AdminNavigator";
 
 function App() {
+  const { authInfo } = useAuth();
+  const isAdmin = authInfo.profile?.role === "admin";
+
+  if (isAdmin) {
+    return <AdminNavigator />;
+  }
   return (
     <>
       <Navbar />

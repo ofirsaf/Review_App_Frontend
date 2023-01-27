@@ -14,11 +14,11 @@ const SignIn = () => {
   const history = useHistory();
   const { handleLogin, authInfo } = useAuth();
   const { isPending, isLoggedIn } = authInfo;
-  useEffect(() => {
-    if (isLoggedIn) {
-      history.push("/");
-    }
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     history.push("/");
+  //   }
+  // }, [isLoggedIn]);
 
   const [userInfo, setUserInfo] = useState({
     email: "",

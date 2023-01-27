@@ -32,15 +32,14 @@ export default function AuthProvider({ children }) {
       updateNotifcation("error", error);
       return setAuthInfo({ ...authInfo, isPending: false, error });
     }
+    history.push("/", { replace: true });
     const arr = {
       profile: { ...user },
       isPending: false,
       isLoggedIn: true,
       error: "",
     };
-    console.log(arr);
     setAuthInfo(arr);
-    console.log(authInfo);
     localStorage.setItem("auth-token", user.token);
   };
 

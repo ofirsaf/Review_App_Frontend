@@ -10,7 +10,6 @@ export default function NotVerfied() {
   const isVerified = authInfo.profile?.isVerified;
   const navigateToVerfication = (e) => {
     e.preventDefault();
-    console.log(authInfo);
     history.push("/auth/verification", { state: { user: authInfo.profile } });
   };
   return (
