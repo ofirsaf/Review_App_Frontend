@@ -4,11 +4,31 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { uploadTrailer } from "../../api/movie";
 import { useNotfication } from "../../hooks";
 import { useState } from "react";
+import MovieFrom from "./MovieFrom";
 
 export default function MovieUpload() {
   const [videoSelected, setVideoSelected] = useState(false);
   const [videoUploaded, setVideoUploaded] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [videoInfo, setVideoInfo] = useState({});
+  const [movieInfo, setMovieInfo] = useState({
+    title: "",
+    storyLine: "",
+    tags: [],
+    cast: [],
+    director: {},
+    writers: [],
+    releseDate: "",
+    poster: null,
+    genres: [],
+    type: "",
+    language: "",
+    status: "",
+    trailer: {
+      url: "",
+      public_id: "",
+    },
+  });
   const { updateNotifcation } = useNotfication();
 
   const handleTypeError = (error) => {
@@ -20,11 +40,17 @@ export default function MovieUpload() {
     formData.append("video", file);
 
     setVideoSelected(true);
-    const res = await uploadTrailer(formData, setUploadProgress);
+    handleUploadTrailer(formData);
+  };
 
-    if (!res.error) {
-      setVideoUploaded(true);
-    }
+  const handleUploadTrailer = async (data) => {
+    const { error, url, public_id } = await uploadTrailer(
+      data,
+      setUploadProgress
+    );
+    if (error) return updateNotifcation("error", error);
+    setVideoUploaded(true);
+    setVideoInfo({ url, public_id });
   };
 
   const getUploadProgressValue = () => {
@@ -38,7 +64,7 @@ export default function MovieUpload() {
   return (
     <div className="fixed inset-0 dark:bg-white dark:bg-opacity-50 bg-primary bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
       <div className="dark:bg-primary bg-white rounded w-[45rem] h-[40rem] overflow-auto p-2">
-        <UploadProgress
+        {/* <UploadProgress
           visible={!videoUploaded && videoSelected}
           message={getUploadProgressValue()}
           width={uploadProgress}
@@ -47,7 +73,9 @@ export default function MovieUpload() {
           visible={!videoSelected}
           onTypeError={handleTypeError}
           handleChange={handleChange}
-        />
+        /> */}
+
+        <MovieFrom />
       </div>
     </div>
   );
